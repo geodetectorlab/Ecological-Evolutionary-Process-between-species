@@ -1,0 +1,89 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+library(bipartite)
+```
+
+
+
+```{r}
+data("Safariland")
+head(Safariland)
+dim(Safariland)
+```
+
+
+
+```{r}
+plotweb(Safariland)
+```
+
+
+
+```{r}
+plotweb(Safariland, text.rot = 90, arrow = "down.center",
+        col.interaction = "wheat2", y.lim = c(-1,2.5))
+```
+
+
+
+```{r}
+visweb(Safariland, type = "none")
+```
+
+
+```{r}
+visweb(Safariland, type = "diagonal")
+```
+
+
+
+```{r}
+visweb(Safariland, type = "nested", circles = T)
+```
+
+
+
+
+```{r}
+networklevel(Safariland, index = "connectance", weighted = T)
+```
+```{r}
+networklevel(olesen2002flores, index = "connectance", weighted = T)
+```
+
+
+
+
+```{r}
+Iobs = networklevel(Safariland, index = "interaction evenness")
+Iobs
+```
+```{r}
+nulls = nullmodel(web = Safariland, N = 100, method = "r2d")
+nulls
+```
+```{r}
+Inulls <- sapply(nulls, function(x) networklevel(x,index='interaction evenness'))
+Inulls
+```
+```{r}
+plot(density(Inulls), xlim = c(0,1), lwd = 2)
+abline(v= Iobs, col = "red", lwd = 2)
+```
+```{r}
+(Iobs-mean(Inulls))/sd(Inulls)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
